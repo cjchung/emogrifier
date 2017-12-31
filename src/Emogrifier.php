@@ -2,6 +2,9 @@
 
 namespace Pelago;
 
+use Symfony\Component\CssSelector\CssSelectorConverter;
+use Symfony\Component\CssSelector\Exception\SyntaxErrorException;
+
 /**
  * This class provides functions for converting CSS styles into inline style attributes in your HTML code.
  *
@@ -76,6 +79,11 @@ class Emogrifier
      * @var string
      */
     const DEFAULT_DOCUMENT_TYPE = '<!DOCTYPE html>';
+
+    /**
+     * @var CssSelectorConverter
+     */
+    private $cssSelectorConverter = null;
 
     /**
      * @var string
@@ -259,6 +267,8 @@ class Emogrifier
      */
     public function __construct($html = '', $css = '')
     {
+        $this->cssSelectorConverter = new CssSelectorConverter();
+
         $this->setHtml($html);
         $this->setCss($css);
     }
@@ -357,7 +367,7 @@ class Emogrifier
      *
      * @return void
      *
-     * @throws \InvalidArgumentException
+     * @throws SyntaxErrorException
      */
     protected function process(\DOMDocument $xmlDocument)
     {
@@ -388,7 +398,7 @@ class Emogrifier
             try {
                 // \DOMXPath::query will always return a DOMNodeList or an exception when errors are caught.
                 $nodesMatchingCssSelectors = $xPath->query($this->translateCssToXpath($cssRule['selector']));
-            } catch (\InvalidArgumentException $e) {
+            } catch (SyntaxErrorException $e) {
                 if ($this->debug) {
                     throw $e;
                 }
@@ -1133,13 +1143,13 @@ class Emogrifier
      *
      * @return bool
      *
-     * @throws \InvalidArgumentException
+     * @throws SyntaxErrorException
      */
     private function existsMatchForCssSelector(\DOMXPath $xPath, $cssSelector)
     {
         try {
             $nodesMatchingSelector = $xPath->query($this->translateCssToXpath($cssSelector));
-        } catch (\InvalidArgumentException $e) {
+        } catch (SyntaxErrorException $e) {
             if ($this->debug) {
                 throw $e;
             }
@@ -1505,9 +1515,13 @@ class Emogrifier
      * @param string $cssSelector a CSS selector
      *
      * @return string the corresponding XPath selector
+     *
+     * @throws SyntaxErrorException
      */
     private function translateCssToXpath($cssSelector)
     {
+        return $this->cssSelectorConverter->toXPath($cssSelector);
+
         $paddedSelector = ' ' . $cssSelector . ' ';
         $lowercasePaddedSelector = preg_replace_callback(
             '/\\s+\\w+\\s+/',
@@ -1804,7 +1818,7 @@ class Emogrifier
      *
      * @return \DOMElement[]
      *
-     * @throws \InvalidArgumentException
+     * @throws SyntaxErrorException
      */
     private function getNodesToExclude(\DOMXPath $xPath)
     {
@@ -1812,7 +1826,7 @@ class Emogrifier
         foreach (array_keys($this->excludedSelectors) as $selectorToExclude) {
             try {
                 $matchingNodes = $xPath->query($this->translateCssToXpath($selectorToExclude));
-            } catch (\InvalidArgumentException $e) {
+            } catch (SyntaxErrorException $e) {
                 if ($this->debug) {
                     throw $e;
                 }
