@@ -32,6 +32,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ### Removed
 
 ### Fixed
+- Allow colons and semicolons in attribute value matchers
+  ([#???](https://github.com/MyIntervals/emogrifier/pull/???))
 - Style property ordering when multiple mixed individual and shorthand
   properties apply ([#511](https://github.com/MyIntervals/emogrifier/pull/511),
   [#508](https://github.com/MyIntervals/emogrifier/issues/508))

@@ -434,6 +434,26 @@ class EmogrifierTest extends \PHPUnit_Framework_TestCase
                 'span[title=\'buenas dias bom dia\'] { %1$s }',
                 '<span title="buenas dias bom dia" style="%1$s">',
             ],
+            'type & attribute exact value => with type & exact attribute value match with colon' => [
+                'span[title="a:b"] { %1$s }',
+                '<span title="a:b" style="%1$s">',
+            ],
+            'type & attribute exact value => with type & exact attribute value match with semicolon' => [
+                'span[title="c;d"] { %1$s }',
+                '<span title="c;d" style="%1$s">',
+            ],
+            'type & attribute exact value => with type & exact attribute value match with hyphen' => [
+                'span[title="e-f"] { %1$s }',
+                '<span title="e-f" style="%1$s">',
+            ],
+            'type & attribute exact value => with type & exact attribute value match with space' => [
+                'span[title=" "] { %1$s }',
+                '<span title=" " style="%1$s">',
+            ],
+            'type & attribute exact value => with type & exact attribute value match with mixed special characters' => [
+                'span[title="a:b c;d e-f"] { %1$s }',
+                '<span title="a:b c;d e-f" style="%1$s">',
+            ],
             'type & attribute value with ~, double quotes => with type & exact attribute match' => [
                 'span[title~="bonjour"] { %1$s }',
                 '<span title="bonjour" style="%1$s">',
@@ -465,6 +485,10 @@ class EmogrifierTest extends \PHPUnit_Framework_TestCase
             'type & attribute value with ~, double quotes => with type & word as last of 4 in attribute' => [
                 'span[title~="dia"] { %1$s }',
                 '<span title="buenas dias bom dia" style="%1$s">',
+            ],
+            'type & attribute value with ~ => with type & word as 1st attribute with colon' => [
+                'span[title~="a:b"] { %1$s }',
+                '<span title="a:b c;d e-f" style="%1$s">',
             ],
             'type & attribute value with |, double quotes => with exact match' => [
                 'span[title|="bonjour"] { %1$s }',
@@ -507,6 +531,10 @@ class EmogrifierTest extends \PHPUnit_Framework_TestCase
                 'span[title^="buenas"] { %1$s }',
                 '<span title="buenas dias" style="%1$s">',
             ],
+            'type & attribute value with ^, double quotes => with match with colon' => [
+                'a[href^="https:"] { %1$s }',
+                '<a href="https://example.com/" style="%1$s">',
+            ],
             'type & attribute value with $, double quotes => with exact match' => [
                 'span[title$="bonjour"] { %1$s }',
                 '<span title="bonjour" style="%1$s">',
@@ -530,6 +558,10 @@ class EmogrifierTest extends \PHPUnit_Framework_TestCase
             'type & attribute value with $, double quotes => with match after another word' => [
                 'span[title$="dias"] { %1$s }',
                 '<span title="buenas dias" style="%1$s">',
+            ],
+            'type & attribute value with $, double quotes => with suffix math with semicolon' => [
+                'div[style$="0;"] { %1$s }',
+                '<div style="margin: 16px 0; %1$s">',
             ],
             'type & two-word attribute value with *, double quotes => with exact match' => [
                 'span[title*="buenas dias"] { %1$s }',
@@ -558,6 +590,10 @@ class EmogrifierTest extends \PHPUnit_Framework_TestCase
             'type & special characters attribute value with *, double quotes => with substring match' => [
                 'span[title*=": subtitle; author"] { %1$s }',
                 '<span title="title: subtitle; author" style="%1$s">',
+            ],
+            'type & special characters attribute value with * => with substring match with colon' => [
+                'div[style*="in: 16px"] { %1$s }',
+                '<div style="margin: 16px 0; %1$s">',
             ],
             'adjacent => 2nd of many' => ['p + p { %1$s }', '<p class="p-2" style="%1$s">'],
             'adjacent => last of many' => ['p + p { %1$s }', '<p class="p-6" style="%1$s">'],
