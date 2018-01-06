@@ -52,5 +52,10 @@ script:
 
 - >
   echo;
+  echo "Running PHPMD";
+  vendor/bin/phpmd Classes/ text Configuration/PHPMD/rules.xml;
+
+- >
+  echo;
   echo "Running PHP_CodeSniffer";
   composer ci:php:sniff;
