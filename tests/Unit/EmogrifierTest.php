@@ -434,6 +434,10 @@ class EmogrifierTest extends \PHPUnit_Framework_TestCase
                 'span[title=\'buenas dias bom dia\'] { %1$s }',
                 '<span title="buenas dias bom dia" style="%1$s">',
             ],
+            'type & attribute exact value => with type & exact attribute value match with semicolon' => [
+                'span[title="c;d"] { %1$s }',
+                '<span title="c;d" style="%1$s">',
+            ],
             'type & attribute value with ~, double quotes => with type & exact attribute match' => [
                 'span[title~="bonjour"] { %1$s }',
                 '<span title="bonjour" style="%1$s">',
@@ -556,8 +560,8 @@ class EmogrifierTest extends \PHPUnit_Framework_TestCase
                 '<span title="buenas dias" style="%1$s">',
             ],
             'type & special characters attribute value with *, double quotes => with substring match' => [
-                'span[title*=": subtitle; author"] { %1$s }',
-                '<span title="title: subtitle; author" style="%1$s">',
+                'span[title*="c;d e-"] { %1$s }',
+                '<span title="a:b c;d e-f" style="%1$s">',
             ],
             'adjacent => 2nd of many' => ['p + p { %1$s }', '<p class="p-2" style="%1$s">'],
             'adjacent => last of many' => ['p + p { %1$s }', '<p class="p-6" style="%1$s">'],

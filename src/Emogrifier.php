@@ -179,7 +179,7 @@ class Emogrifier
         // attribute presence
         '/^\\[(\\w+|\\w+\\=[\'"]?\\w+[\'"]?)\\]/' => '*[@\\1]',
         // type and attribute exact value
-        '/(\\w)\\[(\\w+)\\=[\'"]?([\\w\\s]+)[\'"]?\\]/' => '\\1[@\\2="\\3"]',
+        '/(\\w)\\[(\\w+)\\=[\'"]?([\\w\\s;]+)[\'"]?\\]/' => '\\1[@\\2="\\3"]',
         // type and attribute value with ~ (one word within a whitespace-separated list of words)
         '/([\\w\\*]+)\\[(\\w+)[\\s]*\\~\\=[\\s]*[\'"]?([\\w-_\\/]+)[\'"]?\\]/'
         => '\\1[contains(concat(" ", @\\2, " "), concat(" ", "\\3", " "))]',
