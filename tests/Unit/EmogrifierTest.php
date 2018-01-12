@@ -235,6 +235,18 @@ class EmogrifierTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function addMissingHtml5DocumentType()
+    {
+        $this->subject->setHtml('<html></html>');
+
+        $result = $this->subject->emogrifyBodyContent();
+
+        static::assertContains('<!DOCTYPE html>', $result);
+    }
+
+    /**
      * @return string[][]
      */
     public function documentTypeDataProvider()
